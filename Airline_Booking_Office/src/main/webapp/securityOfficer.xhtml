@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:body>
+
+	<ui:composition template="WEB-INF/templates/defaultTemplate.xhtml">
+
+
+		<f:metadata>
+			<f:viewAction action="#{loginBean.verifyUser}" onPostback="true" />
+		</f:metadata>
+
+		<ui:define name="header">
+			<h1 style="color: #FFFFFF; margin: 20px;">Security Officer</h1>
+			<h:form>
+				<h:commandButton value="Back to Main" action="main"
+					style="margin-left:20px;" styleClass="menuButton" />
+				<h:commandButton value="Log out" action="#{loginBean.logOff}"
+					style="margin-left:20px;" styleClass="menuButton" />
+				<h:commandButton value="Change password" action="passChange"
+					style="margin-left:20px; width:160px" styleClass="menuButton" />
+			</h:form>
+		</ui:define>
+
+		<ui:define name="content">
+
+			<h:form rendered="#{not loginBean.lastLoginCheck}">
+				<h4 style="color: red;">You are using default password. It is
+					highly recommended to change your password.</h4>
+			</h:form>
+
+			<h4>Start manage staff accounts:</h4>
+
+
+			<h:form>
+				<h:commandButton value="Refresh" action="#{secOf.showStaff}"
+					styleClass="bigButton" style="margin:20px;" />
+				<h:commandButton style="margin:20px; padding:10px;"
+					value="New account" action="securityOfficerAddUser"
+					styleClass="bigGreenButton" />
+			</h:form>
+
+
+			<h:form
+				rendered="#{secOf.stList.size() == 0 || secOf.stList == null}">
+				<h4>Staff not found. Try to press «Refresh»</h4>
+			</h:form>
+
+
+			<h:form rendered="#{secOf.stList.size() > 0}">
+				<h:dataTable value="#{secOf.stList}" var="item" styleClass="psTable"
+					headerClass="psTableHeader"
+					rowClasses="psTableOddRow, psTableEvenRow">
+					<h:column>
+						<f:facet name="header">Login</f:facet>
+						<h:outputText value="#{item.login}"></h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Employee's Name</f:facet>
+						<h:outputText value="#{item.empname}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Employee's e-mail</f:facet>
+						<h:outputText value="#{item.empmail}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Employee's Position</f:facet>
+						<h:selectOneMenu value="#{item.role}" rendered="#{item.editable}">
+							<f:selectItem itemLabel="Administrator" itemValue="1" />
+							<f:selectItem itemLabel="Accountant" itemValue="2" />
+							<f:selectItem itemLabel="Analytic" itemValue="3" />
+							<f:convertNumber />
+						</h:selectOneMenu>
+						<h:outputText
+							value="#{item.role==1?'Administrator':item.role==2?'Accountant':'Analytic'}"
+							rendered="#{not item.editable}"></h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Last Logged On</f:facet>
+						<h:outputText value="#{item.lastlogin}">
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2" />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<h:commandButton value="Update" action="#{secOf.editRole(item)}"
+							rendered="#{not item.editable}" styleClass="dtButton" />
+						<h:commandButton value="Save"
+							action="#{secOf.saveStaffItem(item)}" rendered="#{item.editable}"
+							styleClass="dtGreenButton" />
+					</h:column>
+					<h:column>
+						<f:facet name="header"></f:facet>
+						<h:commandButton value="Remove"
+							action="#{secOf.deleteStaff(item)}" styleClass="dtButton" rendered="#{not item.editable}" />
+								<h:commandButton value="Cancel"
+							action="#{secOf.cancelEditingStaffItem(item)}"
+							rendered="#{item.editable}" styleClass="dtButton" />
+					</h:column>
+				</h:dataTable>
+
+			</h:form>
+
+
+		</ui:define>
+
+
+
+	</ui:composition>
+</h:body>
+</html>

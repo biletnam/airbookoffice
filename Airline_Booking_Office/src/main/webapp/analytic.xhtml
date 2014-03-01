@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+
+	<ui:composition template="WEB-INF/templates/defaultTemplate.xhtml">
+
+		<f:metadata>
+			<f:viewAction action="#{loginBean.verifyUser}" onPostback="true" />
+		</f:metadata>
+
+		<ui:define name="header">
+			<h1 style="color: #FFFFFF; margin: 20px;">Business analytic</h1>
+			<h:form>
+				<h:commandButton value="Back to Main" action="main"
+					style="margin-left:20px;" styleClass="menuButton" />
+				<h:commandButton value="Log out" action="#{loginBean.logOff}"
+					style="margin-left:20px;" styleClass="menuButton" />
+				<h:commandButton value="Change password" action="passChange"
+					style="margin-left:20px; width:160px" styleClass="menuButton" />
+			</h:form>
+		</ui:define>
+
+		<ui:define name="content">
+
+			<h:form rendered="#{not loginBean.lastLoginCheck}">
+				<h4 style="color: red;">You are using default password. It is
+					highly recommended to change your password.</h4>
+			</h:form>
+
+			<h4>Get report by date:</h4>
+
+			<h:form styleClass="filter">
+				<h:outputText value="From:" style="margin:20px;"></h:outputText>
+				<p:calendar value="#{ba.startDate}" pattern="dd.MM.yyyy"
+					styleClass="inputCalendar" required="true"
+					requiredMessage="Date required" placeholder="Date here">
+					<f:convertDateTime pattern="dd.MM.yyyy" />
+				</p:calendar>
+
+				<h:outputText value="To:" style="margin:20px;"></h:outputText>
+				<p:calendar value="#{ba.endDate}" pattern="dd.MM.yyyy"
+					styleClass="inputCalendar" required="true"
+					requiredMessage="Date required" placeholder="Date here">
+					<f:convertDateTime pattern="dd.MM.yyyy" />
+				</p:calendar>
+
+				<h:commandButton style="margin:20px; padding:10px;"
+					styleClass="bigButton" value="Report by date" action="analytic"
+					actionListener="#{ba.getDateReport}" />
+				<h:commandButton style=" padding:10px;"
+					styleClass="bigDestinationButton" value="Report by destination"
+					action="analytic" actionListener="#{ba.getDestinationReport}" />
+			</h:form>
+			
+
+			<h:form rendered="#{ba.dateReport.size() > 0}">
+				<h:dataTable value="#{ba.dateReport}" var="item"
+					styleClass="psTable" headerClass="psTableHeader"
+					rowClasses="psTableOddRow, psTableEvenRow">
+					<h:column>
+						<f:facet name="header">Departure date</f:facet>
+						<h:outputText value="#{item.fdate}">
+							<f:convertDateTime pattern="dd.MM.yyyy" timeZone="GMT+2" />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Tickets sold</f:facet>
+						<h:outputText value="#{item.ticketCount}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Total price</f:facet>
+						<h:outputText value="#{item.flightSum}" />
+					</h:column>
+				</h:dataTable>
+
+				<p:barChart value="#{ba.dateChart}" legendPosition="ne"
+					orientation="vertical" barPadding="30" barMargin="30"
+					styleClass="chart" seriesColors="96c56f" />
+
+			</h:form>
+
+			<h:form rendered="#{ba.destinationReport.size() > 0}">
+				<h:dataTable value="#{ba.destinationReport}" var="item"
+					styleClass="psTable" headerClass="psTableHeader"
+					rowClasses="psTableOddRow, psTableEvenRow">
+					<h:column>
+						<f:facet name="header">Destination</f:facet>
+						<h:outputText value="#{item.desCity}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Tickets sold</f:facet>
+						<h:outputText value="#{item.ticketCount}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Total price</f:facet>
+						<h:outputText value="#{item.flightSum}" />
+					</h:column>
+				</h:dataTable>
+
+				<p:barChart value="#{ba.destinationChart}" legendPosition="ne"
+					orientation="vertical" barPadding="30" barMargin="30"
+					styleClass="chart" seriesColors="96c56f" />
+			</h:form>
+			
+			<h4>Total sum: #{ba.totalSum}</h4>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

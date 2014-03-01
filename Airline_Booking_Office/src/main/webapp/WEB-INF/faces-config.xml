@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+	version="2.1">
+
+	<application>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+	</application>
+
+
+	<navigation-rule>
+		<from-view-id>administratorAddFlight.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{loginBean.verifyUser}</from-action>
+			<from-outcome>administrator</from-outcome>
+			<to-view-id>administratorAddFlight.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>securityOfficerAddUser.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{loginBean.verifyUser}</from-action>
+			<from-outcome>securityOfficer</from-outcome>
+			<to-view-id>securityOfficerAddUser.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+</faces-config>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="WEB-INF/templates/defaultTemplate.xhtml">
+		<ui:define name="header">
+			<h1 style="color: #FFFFFF; margin: 20px;">Cart</h1>
+			<h:form>
+				<h:commandButton value="Back to Main" action="main"
+					style="margin-left:20px;" styleClass="menuButton" />
+			</h:form>
+		</ui:define>
+
+
+		<ui:define name="content">
+			<h:form rendered="#{cart.cartItemCount == 0}">
+				<h2>Your cart is currently empty</h2>
+			</h:form>
+			<h:form rendered="#{cart.cartItemCount > 0}">
+				<h:panelGrid columns="2">
+				<h:form>
+				<h4>Reservations: #{cart.cartItemCount}</h4>
+				</h:form>
+				<h:form>
+				<h4>Subtotal: #{cart.cartTotalPrice}</h4>
+				</h:form>
+				</h:panelGrid>
+			</h:form>
+
+			<h:form rendered="#{cart.cartItemCount > 0}">
+				<h:dataTable value="#{cart.toOrder}" var="item" styleClass="psTable"
+					headerClass="psTableHeader"
+					rowClasses="psTableOddRow, psTableEvenRow">
+					<h:column>
+						<f:facet name="header">Code</f:facet>
+						<h:outputText value="#{item.fcode}"></h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Destination</f:facet>
+						<h:outputText value="#{item.desCity}"></h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Airport</f:facet>
+						<h:outputText value="#{item.desPort}"></h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Date</f:facet>
+						<h:outputText value="#{item.fdate}">
+							<f:convertDateTime pattern="dd.MM.yyyy" timeZone="GMT+2" />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Time</f:facet>
+						<h:outputText value="#{item.fdate}">
+							<f:convertDateTime pattern="HH:mm" timeZone="GMT+2" />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Tickets</f:facet>
+						<h:selectOneMenu value="#{item.ticketCount}" rendered="#{item.editable}">
+								<f:selectItem itemLabel="1" itemValue="1" />
+								<f:selectItem itemLabel="2" itemValue="2" />
+								<f:selectItem itemLabel="3" itemValue="3" />
+								<f:selectItem itemLabel="4" itemValue="4" />
+								<f:selectItem itemLabel="5" itemValue="5" />
+								<f:convertNumber />
+						</h:selectOneMenu>
+						<h:outputText value="#{item.ticketCount}"
+							rendered="#{not item.editable}" />
+
+					</h:column>
+					<h:column>
+						<f:facet name="header">Price</f:facet>
+						<h:outputText value="#{item.ticketPrice}"></h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header"></f:facet>
+						<h:commandButton value="Edit" action="#{cart.editReserve(item)}"
+							rendered="#{not item.editable}" styleClass="dtButton" />
+						<h:commandButton value="Save" styleClass="dtGreenButton"
+							action="#{cart.saveCartItem(item)}" rendered="#{item.editable}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header"></f:facet>
+						<h:commandButton value="Remove"
+							action="#{cart.deleteReserve(item)}" styleClass="dtButton" />
+					</h:column>
+				</h:dataTable>
+			</h:form>
+
+
+			<h:form rendered="#{cart.cartItemCount > 0}">
+				<h2>Your info:</h2>
+			</h:form>
+
+			<h:form id="newOrder" rendered="#{cart.cartItemCount > 0}">
+
+				<h:panelGrid columns="2">
+					<h:outputText value="Your name"></h:outputText>
+					<p:inputText value="#{cart.customerName}" required="true"
+						placeholder="Enter your name"
+						styleClass="inputLineLarge"
+						requiredMessage="Name required"></p:inputText>
+					<h:outputText value="Your e-mail"></h:outputText>
+					<p:inputText value="#{cart.customerMail}" required="true"
+						placeholder="Enter your e-mail"
+						styleClass="inputLineLarge"
+						requiredMessage="e-mail required"></p:inputText>
+					<h:commandButton styleClass="bigGreenButton" style="margin-top:20px;"
+						value="Submit order!" action="#{cart.createOrder}"></h:commandButton>
+				</h:panelGrid>
+
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

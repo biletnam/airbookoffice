@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="WEB-INF/templates/defaultTemplate.xhtml">
+		<ui:define name="header">
+			<h1 style="color: #FFFFFF; margin: 20px;">Plain &amp; Simple
+				Airline Booking Office</h1>
+			<h:form id="logined" rendered="#{loginBean.logined}">
+					<h4 style="color: #FFFFFF">
+						Logged in as
+						<h:commandLink styleClass="logLink"
+							value="#{loginBean.user.empname}"
+							action="#{loginBean.verifyUser}" />
+					</h4>
+
+					<h:commandButton style="width:100px; margin-left:20px;"
+						value="Log Out" action="#{loginBean.logOffFromMain}"
+						styleClass="loginButton"></h:commandButton>
+			</h:form>
+
+			<h:form id="login" rendered="#{not loginBean.logined}">
+				<h:panelGrid columns="2">
+					<h:outputText value="Login" style="margin-right:20px;"></h:outputText>
+					<p:inputText value="#{loginBean.login}"
+						style="width:90px; font-size:15px; color:#3D9AD1;" maxlength="15"
+						required="true" requiredMessage="Login required"></p:inputText>
+					<h:outputText value="Password" style="margin-right:20px;"></h:outputText>
+					<p:password value="#{loginBean.password}"
+						style="width: 90px; font-size:15px; color:#3D9AD1;" maxlength="10"
+						required="true" requiredMessage="Password required"></p:password>
+					<h:commandButton style="margin-top:5px;" value="Login"
+						action="#{loginBean.logIn}" styleClass="loginButton"></h:commandButton>
+				</h:panelGrid>
+			</h:form>
+
+			<h:form>
+				<h:commandButton image="resources/images/cart.png" value="Cart:"
+					action="cart"
+					style="margin-left:20px; color:#FFFFFF; font-family: verdana" />
+				<h:outputText value="#{cart.cartItemCount}"
+					style="color:#FFFFFF; font-family: verdana; margin-left:10px;"></h:outputText>
+				<h:outputText value="Order subtotal: "
+					style="color:#FFFFFF; font-family: verdana; margin-left:20px;" />
+				<h:outputText value="#{cart.cartTotalPrice}"
+					style="color:#FFFFFF; font-family: verdana"></h:outputText>
+			</h:form>
+		</ui:define>
+
+
+
+
+		<ui:define name="content">
+
+			<h2>Welcome to the Plain &amp; Simple Airline Booking Office!</h2>
+			<h4 style="font-weight: normal;">To start booking tickets,
+				please, enter the date and destination city:</h4>
+
+			<h:form styleClass="filter" id="flightsFilter">
+
+				<h:outputText value="From:" style="margin:20px;"></h:outputText>
+				<p:calendar id="From" value="#{home.startDate}" pattern="dd.MM.yyyy"
+					mindate="home.startDate" styleClass="inputCalendar" required="true"
+					requiredMessage="Date required" placeholder="Date here">
+					<f:convertDateTime pattern="dd.MM.yyyy" />
+				</p:calendar>
+
+				<h:outputText value="To:" style="margin:20px;"></h:outputText>
+				<p:calendar id="To" value="#{home.endDate}" pattern="dd.MM.yyyy"
+					mindate="home.startDate" styleClass="inputCalendar" required="true"
+					requiredMessage="Date required" placeholder="Date here">
+					<f:convertDateTime pattern="dd.MM.yyyy" />
+				</p:calendar>
+
+				<h:outputText value="Destination:" style="margin:20px;"></h:outputText>
+				<p:autoComplete id="autoComplete" value="#{home.desCity}"
+					minQueryLength="3" placeholder="City name here" required="true"
+					requiredMessage="City required" completeMethod="#{home.complete}" />
+
+				<h:commandButton style="margin:20px; padding:10px;"
+					styleClass="bigButton" value="Find flights!" action="main"
+					actionListener="#{home.findFlights}" />
+			</h:form>
+
+			<h:form rendered="#{home.foundList.size() == 0}">
+				<h4>Flights not found.</h4>
+			</h:form>
+
+			<h:form rendered="#{home.foundList.size() > 0}">
+
+				<h:dataTable value="#{home.foundList}" var="item"
+					styleClass="psTable" headerClass="psTableHeader"
+					rowClasses="psTableOddRow, psTableEvenRow">
+					<h:column>
+						<f:facet name="header">IATA</f:facet>
+						<h:outputText value="#{item.fcode}"></h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Destination</f:facet>
+						<h:outputText value="#{item.desCity}"></h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Airport</f:facet>
+						<h:outputText value="#{item.desPort}"></h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Departure date</f:facet>
+						<h:outputText value="#{item.fdate}">
+							<f:convertDateTime pattern="dd.MM.yyyy" timeZone="GMT+2" />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Time</f:facet>
+						<h:outputText value="#{item.fdate}">
+							<f:convertDateTime pattern="HH:mm" timeZone="GMT+2" />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Available Seats</f:facet>
+						<h:outputText value="#{item.avSeats}"></h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Ticket Price</f:facet>
+						<h:outputText value="#{item.ticketPrice}"></h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Buy ticket" />
+						</f:facet>
+						<p:selectBooleanCheckbox value="#{item.selected}" />
+					</h:column>
+
+
+
+				</h:dataTable>
+				<h:commandButton style="margin:20px; padding:10px;"
+					styleClass="bigGreenButton" value="Add to cart"
+					action="#{cart.selectToCart}">
+				</h:commandButton>
+
+				<h:commandButton style="margin:20px; padding:10px;"
+					styleClass="bigButton" value="Your cart" action="cart" />
+			</h:form>
+
+
+		</ui:define>
+
+	</ui:composition>
+</h:body>
+</html>

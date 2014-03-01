@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<body>
+
+	<ui:composition template="WEB-INF/templates/defaultTemplate.xhtml">
+		<ui:define name="header">
+			<h1 style="color: #FFFFFF; margin: 20px;">Change password</h1>
+			<h:form>
+			<h:commandButton value="Back to Main" action="main"
+				style="margin-left:20px;" styleClass="menuButton" />
+			</h:form>
+		</ui:define>
+
+		<ui:define name="content">
+			<h:form id="changePass" rendered="#{not changePass.changed}">
+				<h:panelGrid columns="2">
+						<h:outputText value="Login" style="margin-right:20px;"></h:outputText>
+					<p:inputText value="#{changePass.login}" style="width:90px; font-size:15px; color:#3D9AD1;"
+						maxlength="15" required="true"
+						requiredMessage="Please enter login"></p:inputText>
+						
+					<h:outputText value="Password" style="margin-right:20px;"></h:outputText>
+					<p:password value="#{changePass.password}" style="width: 90px; font-size:15px; color:#3D9AD1;"
+						maxlength="10" required="true"
+						requiredMessage="Please enter old password"></p:password>
+						
+					<h:outputText value="New Password" style="margin-right:20px;"></h:outputText>
+					<p:password value="#{changePass.newPassword}" style="width: 90px; font-size:15px; color:#3D9AD1"
+						maxlength="10" required="true"
+						requiredMessage="Please enter new password"></p:password>
+					
+				</h:panelGrid>
+				<h:commandButton style="margin-top:10px;" value="Change!" action="#{changePass.changePassword}" styleClass="bigButton"></h:commandButton>
+			</h:form>
+			
+			<h:form rendered="#{changePass.changed}">
+			<h2>Your password has been successfully changed.</h2>
+			</h:form>
+
+		</ui:define>
+
+
+
+	</ui:composition>
+</body>
+</html>

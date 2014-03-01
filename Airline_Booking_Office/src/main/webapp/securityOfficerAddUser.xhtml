@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+
+	<ui:composition template="WEB-INF/templates/defaultTemplate.xhtml">
+
+		
+		<f:metadata>
+			<f:viewAction action="#{loginBean.verifyUser}"  onPostback="true" />
+		</f:metadata>
+
+		<ui:define name="header">
+			<h1 style="color: #FFFFFF; margin: 20px;">Add new staff account</h1>
+			<h:form>
+				<h:commandButton value="Back to Security Officer" action="securityOfficer"
+					style="margin-left:20px; width:190px" styleClass="menuButton" />
+			</h:form>
+		</ui:define>
+
+		<ui:define name="content">
+
+			<h4>Add new staff account:</h4>
+
+			<h:form id="newStaff">
+				<h:panelGrid columns="2">
+					<h:outputText value="Login"></h:outputText>
+					<p:inputText value="#{secOfAdd.login}" required="true"
+						requiredMessage="Login required" styleClass="inputLineLarge" />
+
+					<h:outputText value="Password"></h:outputText>
+					<p:password value="#{secOfAdd.password}" required="true"
+						requiredMessage="Password required"
+						styleClass="inputLineLarge" />
+
+					<h:outputText value="Name"></h:outputText>
+					<p:inputText value="#{secOfAdd.empname}" required="true"
+						requiredMessage="Name required" styleClass="inputLineLarge" />
+
+					<h:outputText value="e-mail"></h:outputText>
+					<p:inputText value="#{secOfAdd.empmail}" required="true"
+						requiredMessage="e-mail required" styleClass="inputLineLarge">
+					</p:inputText>
+					<h:outputText value="Position"></h:outputText>
+					<h:selectOneMenu value="#{secOfAdd.role}">
+						<f:selectItem itemLabel="Administrator" itemValue="1" />
+						<f:selectItem itemLabel="Accountant" itemValue="2" />
+						<f:selectItem itemLabel="Analytic" itemValue="3" />
+						<f:convertNumber />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:commandButton style="margin-top:20px;" value="Create account!"
+					action="#{secOfAdd.addNewStaff}" styleClass="bigGreenButton" />
+			</h:form>
+
+		</ui:define>
+
+	</ui:composition>
+</h:body>
+</html>

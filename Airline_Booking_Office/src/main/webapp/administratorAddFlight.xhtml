@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+
+	<ui:composition template="WEB-INF/templates/defaultTemplate.xhtml">
+	
+	
+		<f:metadata>
+			<f:viewAction action="#{loginBean.verifyUser}" onPostback="true" />
+		</f:metadata>
+		
+		
+		<ui:define name="header">
+			<h1 style="color: #FFFFFF; margin: 20px;">Add new flight</h1>
+			<h:form>
+				<h:commandButton value="Back to Administrator"
+					action="administrator" style="margin-left:20px; width:160px"
+					styleClass="menuButton" />
+			</h:form>
+		</ui:define>
+
+		<ui:define name="content">
+			
+			<h4>Add new flight to the timetable:</h4>
+
+			<h:form id="newFlight">
+				<h:panelGrid columns="2">
+					<h:outputText value="IATA"></h:outputText>
+					<p:inputText value="#{adminAddFlight.fcode}" required="true"
+						requiredMessage="IATA code required" styleClass="inputLineMedium" />
+
+					<h:outputText value="Destination"></h:outputText>
+					<p:inputText value="#{adminAddFlight.desCity}" required="true"
+						requiredMessage="City name required"
+						styleClass="inputLineLarge" />
+
+					<h:outputText value="Airport"></h:outputText>
+					<p:inputText value="#{adminAddFlight.desPort}" required="true"
+						requiredMessage="Airport name required" styleClass="inputLineLarge" />
+
+					<h:outputText value="Departure date"></h:outputText>
+					<p:calendar value="#{adminAddFlight.fdate}"
+						pattern="dd.MM.yyyy HH:mm" styleClass="inputCalendarHHMM"
+						required="true" requiredMessage="Date required">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2" />
+					</p:calendar>
+					<h:outputText value="Tickets"></h:outputText>
+					<p:inputText id="Seats" value="#{adminAddFlight.avSeats}"
+						required="true" requiredMessage="Seats amount required"
+						styleClass="inputLineShort">
+						<f:convertNumber />
+						<f:validateLongRange minimum="10" maximum="500" />
+					</p:inputText>
+
+					<h:outputText value="Ticket price"></h:outputText>
+					<p:inputText id="Price" value="#{adminAddFlight.ticketPrice}"
+						required="true" requiredMessage="Price required"
+						styleClass="inputLineShort">
+						<f:convertNumber minFractionDigits="2" />
+						<f:validateDoubleRange minimum="50" maximum="1000.00" />
+					</p:inputText>
+
+				</h:panelGrid>
+
+				<h:commandButton styleClass="bigGreenButton" style="margin-top:20px;"
+					value="Add flight" action="#{adminAddFlight.addNewFlight}"
+					actionListener="#{adminAddFlight.addInfo}">
+				</h:commandButton>
+				
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

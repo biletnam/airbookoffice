@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+
+	<ui:composition template="WEB-INF/templates/defaultTemplate.xhtml">
+		<ui:define name="header">
+			<h1 style="color: #FFFFFF; margin: 20px;">Logged off</h1>
+			<h:form>
+				<h:commandButton value="Back to Main" action="main"
+					style="margin-left:20px;" styleClass="menuButton" />
+			</h:form>
+		</ui:define>
+
+
+		<ui:define name="content">
+			<h4>You can login again:</h4>
+
+			<h:form id="logoff">
+				<h:panelGrid columns="2">
+					<h:outputText value="Login"
+						style="color:#6699CC; margin-right:20px;"></h:outputText>
+					<p:inputText value="#{loginBean.login}"
+						style="width:90px; font-size:15px; color:#3D9AD1;" maxlength="15"
+						required="true" requiredMessage="Please enter login"></p:inputText>
+					<h:outputText value="Password"
+						style="color:#6699CC; margin-right:20px;"></h:outputText>
+					<p:password value="#{loginBean.password}"
+						style="width: 90px; font-size:15px; color:#3D9AD1;" maxlength="10"
+						required="true" requiredMessage="Please enter password"></p:password>
+					<h:commandButton style="margin-top:20px;" value="Login"
+						action="#{loginBean.logIn}" styleClass="loginButton"></h:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+
+
+
+	</ui:composition>
+
+</h:body>
+</html>
