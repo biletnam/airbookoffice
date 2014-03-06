@@ -17,7 +17,7 @@
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver" />
 		<property name="url"
-			value="jdbc:derby:D:\GDrive\Bionic\workspace_project\AIRDB;create=false" />
+			value="jdbc:derby:D:\git\EGit local\Airline_Booking_Office\AIRDB;create=false" />
 	</bean>
 
 
