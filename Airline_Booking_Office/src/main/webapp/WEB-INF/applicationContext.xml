@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
-
+	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
@@ -10,14 +10,15 @@
 	http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
 	<context:component-scan base-package="com.vitaliyr.app" />
-	
 
- 	
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		p:location="/WEB-INF/db.properties" />
+
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver" />
-		<property name="url"
-			value="jdbc:derby:D:\git\EGit local\Airline_Booking_Office\AIRDB;create=false" />
+		<property name="driverClassName" value="${db.driverClassName}" />
+		<property name="url" value="${db.databaseurl}" />
 	</bean>
 
 
@@ -37,10 +38,11 @@
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" />
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
-	<task:annotation-driven/>
+	<task:annotation-driven />
 
 
-	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+	<bean
+		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 
-	
+
 </beans>
