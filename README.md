@@ -1,7 +1,8 @@
-Airline Booking Office <br>
+Airline Booking Office
+====
 J2EE web application <br>
-Main goal: create an online ticket reservation system by using J2EE technology stack. <br>
-Stack: JSF2 + Primefaces, Hibernate, Derby, Spring (core, web, orm, jdbc), Tomcat, Maven.
+Main goal: create an online ticket reservation system. <br>
+Technologies: JSF2 + Primefaces, Hibernate, Derby, Spring (core, web, orm, jdbc), Tomcat, Maven.
 
 Test logins/passwords: <br>
 Security officer = super / super <br>
