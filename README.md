@@ -10,4 +10,4 @@ Administrator = user1 / user1 <br>
 Accountant = user2 / user 2 <br>
 Business Analytic = user3 / user3 <br>
 
-Simple RESTful webservice: /webservices/dayflights/
+Simple RESTful web service: /webservices/dayflights/
