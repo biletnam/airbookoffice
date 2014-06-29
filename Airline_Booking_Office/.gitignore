@@ -1,0 +1,8 @@
+# Eclipse
+.classpath
+.settings/
+.metadata/
+.project
+target/
+derby.log
+GDrive/
